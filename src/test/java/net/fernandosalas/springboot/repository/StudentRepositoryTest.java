@@ -116,4 +116,37 @@ public class StudentRepositoryTest {
         assertThat(savedStudent.getEmail()).isEqualTo(student.getEmail());
     }
 
+    //JUnit test for updating student operation
+    @DisplayName("JUnit test for updating student operation")
+    @Test
+    public void givenStudentObject_whenUpdatingStudent_thenReturnStudentObject() {
+        //given - precondition or setup
+        Student student = Student.builder()
+                .id(1L)
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build();
+        studentRepository.save(student);
+        // when - action or the behavior we are going to test
+        Student savedStudent = studentRepository.findById(student.getId()).get();
+
+        savedStudent.setFirstName("Luis");
+        savedStudent.setLastName("Gave");
+        savedStudent.setEmail("luis@gmail.com");
+
+        Student updatedStudent = studentRepository.save(savedStudent);
+
+        // then - verify the output
+        assertThat(updatedStudent).isNotNull();
+        assertThat(updatedStudent.getFirstName())
+                .as("First name should be updated to 'Luis'").isEqualTo("Luis");
+        assertThat(updatedStudent.getLastName())
+                .as("Last name should be updated to 'Gave'")
+                .isEqualTo("Gave");
+        assertThat(updatedStudent.getEmail())
+                .as("Email should be updated to 'luis@gmail.com'")
+                .isEqualTo("luis@gmail.com");
+    }
+
 }
