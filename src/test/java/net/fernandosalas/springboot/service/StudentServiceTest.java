@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,4 +76,17 @@ public class StudentServiceTest {
         assertThat(studentList).containsExactlyElementsOf(mockStudentList);
     }
 
+    @DisplayName("JUnit test for getAllStudents Method(negative scenario)")
+    @Test
+    public void givenEmptyStudentList_whenGetAllStudents_thenReturnEmptyStudentList() {
+        //given - precondition or setup
+        given(studentRepository.findAll()).willReturn(Collections.emptyList());
+
+        // when - action or the behavior we are going to test
+        List<Student> studentList = studentServiceImplementation.getAllStudents();
+
+        // then - verify the output
+        assertThat(studentList).isEmpty();
+        assertThat(studentList).hasSize(0);
+    }
 }
