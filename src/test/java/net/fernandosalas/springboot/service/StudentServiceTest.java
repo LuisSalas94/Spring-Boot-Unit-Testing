@@ -125,4 +125,19 @@ public class StudentServiceTest {
         assertThat(updatedStudent.getEmail()).isEqualTo(student.getEmail());
     }
 
+    //JUnit test to delete Employee Method
+    @DisplayName("JUnit test to delete Employee Method")
+    @Test
+    public void givenStudentId_whenDeleteStudent_thenNothing() {
+        //given - precondition or setup
+        long studentId = 1L;
+        willDoNothing().given(studentRepository).deleteById(1L);
+
+        // when - action or the behavior we are going to test
+        studentServiceImplementation.deleteStudent(studentId);
+
+        // then - verify the output
+        verify(studentRepository, times(1)).deleteById(studentId);
+    }
+
 }
