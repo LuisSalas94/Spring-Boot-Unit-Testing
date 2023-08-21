@@ -169,7 +169,28 @@ public class StudentRepositoryTest {
         assertThat(optionalStudent)
                 .as("Deleted student should not be present")
                 .isEmpty();
+    }
 
+    //JUnit test for custom query using JPQL with index
+    @DisplayName("JUnit test for custom query using JPQL with index")
+    @Test
+    public void givenFirstNameAndLastName_whenUsingIndexJPQL_thenReturnStudentObject() {
+        //given - precondition or setup
+        Student student = Student.builder()
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build();
+        studentRepository.save(student);
+
+        // when - action or the behavior we are going to test
+        String name = "Fernando";
+        String lastName = "Salas";
+        Student savedStudent = studentRepository.findByJPQLIndexParams(name, lastName);
+
+        // then - verify the output
+        assertThat(savedStudent.getFirstName()).isEqualTo(student.getFirstName());
+        assertThat(savedStudent.getLastName()).isEqualTo(student.getLastName());
     }
 
 }
