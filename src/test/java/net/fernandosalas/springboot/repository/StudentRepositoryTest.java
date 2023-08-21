@@ -93,9 +93,27 @@ public class StudentRepositoryTest {
                     assertThat(studentDb.getLastName()).isEqualTo("Salas");
                     assertThat(studentDb.getEmail()).isEqualTo("fernando@gmail.com");
                 });
-
-
     }
 
+    //JUnit test to get student by email operation
+    @DisplayName("JUnit test to get student by email operation")
+    @Test
+    public void givenStudentEmail_whenFindStudentByEmail_thenReturnStudentObject() {
+        //given - precondition or setup
+        Student student = Student.builder()
+                .id(1L)
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build();
+
+        // when - action or the behavior we are going to test
+        studentRepository.save(student);
+        Student savedStudent = studentRepository.findByEmail(student.getEmail()).get();
+
+        // then - verify the output
+        assertThat(savedStudent).isNotNull();
+        assertThat(savedStudent.getEmail()).isEqualTo(student.getEmail());
+    }
 
 }
