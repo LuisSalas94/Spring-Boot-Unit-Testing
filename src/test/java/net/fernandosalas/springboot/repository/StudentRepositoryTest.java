@@ -9,9 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 public class StudentRepositoryTest {
@@ -67,4 +68,34 @@ public class StudentRepositoryTest {
                 .hasSize(2)
                 .containsExactlyInAnyOrder(student, student2);
     }
+
+    //JUnit test for get student by id
+    @DisplayName("JUnit test for get student by id")
+    @Test
+    public void givenStudentId_whenFindStudentById_thenReturnStudentObject() {
+        //given - precondition or setup
+        Student student = Student.builder()
+                .id(1L)
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build();
+
+        // when - action or the behavior we are going to test
+        studentRepository.save(student);
+        Optional<Student> savedStudent = studentRepository.findById(student.getId());
+
+        // then - verify the output
+        assertThat(savedStudent).isPresent()
+                .hasValueSatisfying(studentDb -> {
+                    assertThat(studentDb.getId()).isEqualTo(1L);
+                    assertThat(studentDb.getFirstName()).isEqualTo("Fernando");
+                    assertThat(studentDb.getLastName()).isEqualTo("Salas");
+                    assertThat(studentDb.getEmail()).isEqualTo("fernando@gmail.com");
+                });
+
+
+    }
+
+
 }
