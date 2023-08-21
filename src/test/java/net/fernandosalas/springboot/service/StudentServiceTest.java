@@ -105,4 +105,24 @@ public class StudentServiceTest {
         // then - verify the output
         assertThat(savedStudent).isNotNull();
     }
+
+    //JUnit test for updateStudent Method
+    @DisplayName("JUnit test for updateStudent Method")
+    @Test
+    public void givenStudentObject_whenUpdateStudent_thenReturnUpdatedStudent() {
+        //given - precondition or setup
+        given(studentRepository.save(student)).willReturn(student);
+
+        // when - action or the behavior we are going to test
+        student.setFirstName("Claudia");
+        student.setLastName("Ramos");
+        student.setEmail("claudia@gmail.com");
+        Student updatedStudent = studentServiceImplementation.updateStudent(student);
+
+        // then - verify the output
+        assertThat(updatedStudent.getFirstName()).isEqualTo(student.getFirstName());
+        assertThat(updatedStudent.getLastName()).isEqualTo(student.getLastName());
+        assertThat(updatedStudent.getEmail()).isEqualTo(student.getEmail());
+    }
+
 }

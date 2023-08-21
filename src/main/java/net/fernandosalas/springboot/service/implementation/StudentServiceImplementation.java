@@ -31,4 +31,9 @@ public class StudentServiceImplementation implements StudentService {
     public Optional<Student> getStudentById(long id) {
         return studentRepository.findById(id);
     }
+
+    @Override
+    public Student updateStudent(Student student) {
+        return studentRepository.save(student);
+    }
 }
