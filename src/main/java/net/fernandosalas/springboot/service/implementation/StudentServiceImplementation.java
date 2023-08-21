@@ -7,6 +7,8 @@ import net.fernandosalas.springboot.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class StudentServiceImplementation implements StudentService {
@@ -17,5 +19,10 @@ public class StudentServiceImplementation implements StudentService {
     @Override
     public Student saveStudent(Student student) {
         return studentRepository.save(student);
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 }
