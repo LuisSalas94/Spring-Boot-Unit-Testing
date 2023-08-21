@@ -149,4 +149,27 @@ public class StudentRepositoryTest {
                 .isEqualTo("luis@gmail.com");
     }
 
+    //JUnit test for deleting student
+    @DisplayName("JUnit test for deleting student")
+    @Test
+    public void givenStudentObject_whenDeletingStudent_thenReturnStudentObject() {
+        //given - precondition or setup
+        Student student = Student.builder()
+                .id(1L)
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build();
+        studentRepository.save(student);
+        // when - action or the behavior we are going to test
+        studentRepository.delete(student);
+        Optional<Student> optionalStudent = studentRepository.findById(student.getId());
+
+        // then - verify the output
+        assertThat(optionalStudent)
+                .as("Deleted student should not be present")
+                .isEmpty();
+
+    }
+
 }
