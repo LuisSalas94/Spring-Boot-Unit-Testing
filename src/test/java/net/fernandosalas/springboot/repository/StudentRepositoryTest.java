@@ -218,7 +218,7 @@ public class StudentRepositoryTest {
     //JUnit test for custom query using NATIVE SQL with index params
     @DisplayName("JUnit test for custom native query using index param")
     @Test
-    public void givenFirstNameAndLastName_whenUsingNativeQuery_thenReturnStudentObject() {
+    public void givenFirstNameAndLastName_whenUsingNativeIndexQuery_thenReturnStudentObject() {
         Student student = Student.builder()
                 .firstName("Fernando")
                 .lastName("Salas")
@@ -238,4 +238,30 @@ public class StudentRepositoryTest {
                 .as("Last name should match")
                 .isEqualTo(lastName);
     }
+
+    @DisplayName("JUnit test for custom native query using name param")
+    @Test
+    public void givenFirstNameAndLastName_whenUsingNativeNamedQuery_thenReturnStudentObject() {
+        Student student = Student.builder()
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build();
+        studentRepository.save(student);
+
+        String name = "Fernando";
+        String lastName = "Salas";
+        Student studentDB = studentRepository.findByNativeNamedParams(name, lastName);
+
+        assertThat(studentDB.getFirstName())
+                .as("First name should match")
+                .isEqualTo(name);
+
+        assertThat(studentDB.getLastName())
+                .as("Last name should match")
+                .isEqualTo(lastName);
+    }
+
+
+
 }

@@ -19,4 +19,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "select * from students s where s.first_name = ?1 and s.last_name = ?2"
     ,nativeQuery = true)
     Student findByNativeIndexParams(String firstName, String lastName);
+
+    @Query(value = "select * from students s where s.first_name =:firstName and s.last_name =:lastName"
+            ,nativeQuery = true)
+    Student findByNativeNamedParams(String firstName, String lastName);
 }
