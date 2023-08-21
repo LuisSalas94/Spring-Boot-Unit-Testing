@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -88,5 +89,20 @@ public class StudentServiceTest {
         // then - verify the output
         assertThat(studentList).isEmpty();
         assertThat(studentList).hasSize(0);
+    }
+
+    //JUnit test for getStudentById Method
+    @DisplayName("JUnit test for getStudentById Method")
+    @Test
+    public void givenStudentId_whenGetStudentById_thenReturnStudentObject() {
+        //given - precondition or setup
+        long studentId = 1L;
+        given(studentRepository.findById(studentId)).willReturn(Optional.of(student));
+
+        // when - action or the behavior we are going to test
+        Student savedStudent = studentServiceImplementation.getStudentById(studentId).get();
+
+        // then - verify the output
+        assertThat(savedStudent).isNotNull();
     }
 }
