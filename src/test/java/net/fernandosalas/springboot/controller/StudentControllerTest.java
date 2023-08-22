@@ -112,4 +112,41 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.email", is(student.getEmail())));
     }
 
+
+    @Test
+    public void givenUpdateStudent_whenUpdateStudent_thenReturnStudentObject() throws Exception {
+        //given - precondition or setup
+        long studentId = 1L;
+        Student savedStudent = Student.builder()
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build();
+
+        Student updatedStudent = Student.builder()
+                .firstName("Luis")
+                .lastName("Gave")
+                .email("luis@gmail.com")
+                .build();
+
+        given(studentService.getStudentById(studentId)).willReturn(Optional.of(savedStudent));
+        given(studentService.updateStudent(ArgumentMatchers.any(Student.class)))
+                .willAnswer((invocationOnMock -> invocationOnMock.getArgument(0)));
+
+        // when - action or the behavior we are going to test
+        ResultActions response = mockMvc.perform(put(API_PATH + "/{id}", studentId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedStudent)));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.firstName", is(updatedStudent.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(updatedStudent.getLastName())))
+                .andExpect(jsonPath("$.email", is(updatedStudent.getEmail())));
+
+    }
+
+    
+
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/students")
@@ -35,6 +36,22 @@ public class StudentController {
         return studentService.getStudentById(studentId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable("id") long studentId,
+                                                @RequestBody Student updatedStudent) {
+        Optional<Student> optionalStudent = studentService.getStudentById(studentId);
+        if (optionalStudent.isPresent()) {
+            Student savedStudent = optionalStudent.get();
+            savedStudent.setFirstName(updatedStudent.getFirstName());
+            savedStudent.setLastName(updatedStudent.getLastName());
+            savedStudent.setEmail(updatedStudent.getEmail());
+            Student updated = studentService.updateStudent(savedStudent);
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
