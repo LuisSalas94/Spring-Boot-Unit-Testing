@@ -40,7 +40,7 @@ public class StudentController {
 
     @PutMapping("{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable("id") long studentId,
-                                                @RequestBody Student updatedStudent) {
+                                                 @RequestBody Student updatedStudent) {
         Optional<Student> optionalStudent = studentService.getStudentById(studentId);
         if (optionalStudent.isPresent()) {
             Student savedStudent = optionalStudent.get();
@@ -52,6 +52,12 @@ public class StudentController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteStudent(@PathVariable("id") long studentId) {
+        studentService.deleteStudent(studentId);
+        return new ResponseEntity<>("Student Deleted Successfully", HttpStatus.OK);
     }
 
 }

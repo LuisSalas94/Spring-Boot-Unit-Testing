@@ -179,4 +179,19 @@ public class StudentControllerTest {
     }
 
 
+    @Test
+    public void givenStudentId_whenDeleteStudent_thenReturn200() throws Exception {
+        //given - precondition or setup
+        long studentId = 1L;
+        willDoNothing().given(studentService).deleteStudent(studentId);
+
+        // when - action or the behavior we are going to test
+        ResultActions response = mockMvc.perform(delete(API_PATH + "/{id}", studentId));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+
 }
