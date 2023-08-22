@@ -12,8 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.BDDMockito.*;
 
@@ -48,10 +52,38 @@ public class StudentControllerTest {
         // then - verify the output
         // Asserting the response status code is 201 Created
         // Verifying response content using JSONPath
-        response.andExpect(status().isCreated())
+        response.andDo(print())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName", is(student.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(student.getLastName())))
                 .andExpect(jsonPath("$.email", is(student.getEmail())));
+    }
+
+
+    @Test
+    public void givenListOfStudents_whenGetAllStudents_thenReturnStudentList() throws Exception {
+        //given - precondition or setup
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(Student.builder()
+                .firstName("Fernando")
+                .lastName("Salas")
+                .email("fernando@gmail.com")
+                .build());
+
+        studentList.add(Student.builder()
+                .firstName("Andrea")
+                .lastName("Ramos")
+                .email("andrea@gmail.com")
+                .build());
+        given(studentService.getAllStudents()).willReturn(studentList);
+
+        // when - action or the behavior we are going to test
+        ResultActions response = mockMvc.perform(get("/api/students"));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()", is(2)));
     }
 
 }
