@@ -38,8 +38,8 @@ public class StudentServiceTest {
                 .build();
     }
 
-    //JUnit test for saveEmployee Method
-    @DisplayName("JUnit test for saveEmployee Method")
+    //JUnit test for saveStudent Method
+    @DisplayName("JUnit test for saveStudent Method")
     @Test
     public void givenStudentObject_whenSaveStudent_thenReturnStudentObject() {
         //given - precondition or setup
@@ -125,8 +125,8 @@ public class StudentServiceTest {
         assertThat(updatedStudent.getEmail()).isEqualTo(student.getEmail());
     }
 
-    //JUnit test to delete Employee Method
-    @DisplayName("JUnit test to delete Employee Method")
+    //JUnit test to delete Student Method
+    @DisplayName("JUnit test to delete Student Method")
     @Test
     public void givenStudentId_whenDeleteStudent_thenNothing() {
         //given - precondition or setup
